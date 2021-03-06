@@ -225,7 +225,7 @@ pub fn parse_block(header: String, iter: impl Iterator<Item = Result<String, io:
  
     for line_res in iter {
         let line: String = line_res?;
-        if line.is_empty() {
+        if line.trim().is_empty() {
             // Blank lines terminate the "paragraph".
             break;
         }
