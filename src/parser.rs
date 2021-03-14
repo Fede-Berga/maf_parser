@@ -234,7 +234,7 @@ pub fn parse_block(header: String, iter: impl Iterator<Item = Result<String, io:
             "s" => update_from_s_line(&mut fields, &mut block_entries)?,
             "i" => update_from_i_line(&mut fields, &mut block_entries)?,
             "e" => update_from_e_line(&mut fields, &mut block_entries)?,
-//            "q" => update_from_q_line(&mut fields, &mut block_entries)?,
+            "q" => {}, //update_from_q_line(&mut fields, &mut block_entries)?,
             _ => return Err(MAFParseError::BadLineType(fields[0].to_string())),
         };
     }
