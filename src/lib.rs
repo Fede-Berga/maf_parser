@@ -5,6 +5,7 @@ extern crate maplit;
 pub mod parser;
 pub mod output;
 use std::collections::{BTreeMap, HashMap};
+use std::fs;
 
 /// Structure representing a MAF item (comment or block).
 #[derive(Debug, PartialEq, Eq)]
@@ -152,4 +153,23 @@ impl MAFBlock {
             .map(|a| (a.seq.split('.').next().unwrap(), a))
             .fold(HashMap::new(), |mut acc: HashMap<&str, Vec<&MAFBlockAlignedEntry>>, (species, a)| { acc.entry(species).or_insert_with(Vec::new).push(a); acc })
     }
+}
+
+#[test]
+fn test_1() {
+    let file_name = "./test.maf";
+    let content = fs::read_to_string(file_name).unwrap();
+
+    for line in content.lines() {
+        let i = content.find(line).unwrap();
+        match parser::next_maf_item(&mut content[i..].trim().as_bytes()) {
+            Ok(item) => match item {
+                    MAFItem::Block(block) => {println!("block : {}", block); break;},
+                    MAFItem::Comment(comment) => println!("comment : {}", comment),
+                },
+            Err(e) => println!("Error : {:?}", e),
+        }
+    }
+
+    assert_eq!(true, false);
 }
